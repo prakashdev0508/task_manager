@@ -1,5 +1,5 @@
 import React from 'react'
-import { FiMessageSquare, FiCheckSquare, FiClock, FiEye, FiEdit2 } from 'react-icons/fi'
+import {  FiClock, FiEye, FiEdit2 } from 'react-icons/fi'
 
 type StatusLevel = 'Low' | 'Medium' | 'High' | 'Todo' | 'In Progress' | 'Completed'
 
@@ -30,8 +30,6 @@ const badgeStyles: Record<StatusLevel, string> = {
 const TaskCard: React.FC<TaskCardProps> = ({
   title,
   label,
-  comments,
-  checklist,
   status,
   priority,
   daysLeft,
