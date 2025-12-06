@@ -12,6 +12,8 @@ export type Task = {
   completed: boolean
   priority: TaskPriority
   category?: string
+  startDate?: string
+  endDate?: string
   createdAt: string
   updatedAt: string
 }

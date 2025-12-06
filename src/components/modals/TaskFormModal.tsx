@@ -12,6 +12,8 @@ type TaskFormModalProps = {
   initialStatus?: TaskStatus
   initialDescription?: string
   initialPriority?: TaskPriority
+   initialStartDate?: string
+   initialEndDate?: string
   onDeleteClick?: () => void
   onSubmit: (values: {
     title: string
@@ -19,6 +21,8 @@ type TaskFormModalProps = {
     status: TaskStatus
     category?: string
     priority: TaskPriority
+    startDate?: string
+    endDate?: string
   }) => void
 }
 
@@ -31,6 +35,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
   initialStatus = 'todo',
   initialDescription = '',
   initialPriority = 'medium',
+  initialStartDate = '',
+  initialEndDate = '',
   onDeleteClick,
   onSubmit,
 }) => {
@@ -43,6 +49,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
   const [notesValue, setNotesValue] = useState(initialDescription)
   const [categoryValue, setCategoryValue] = useState(initialLabel)
   const [priorityValue, setPriorityValue] = useState<TaskPriority>(initialPriority)
+  const [startDateValue, setStartDateValue] = useState(initialStartDate)
+  const [endDateValue, setEndDateValue] = useState(initialEndDate)
   const [errors, setErrors] = useState<{
     title?: string
     category?: string
@@ -68,6 +76,14 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
   useEffect(() => {
     setPriorityValue(initialPriority)
   }, [initialPriority])
+
+  useEffect(() => {
+    setStartDateValue(initialStartDate)
+  }, [initialStartDate])
+
+  useEffect(() => {
+    setEndDateValue(initialEndDate)
+  }, [initialEndDate])
 
   const handlePrimaryClick = () => {
     const trimmedTitle = titleValue.trim()
@@ -103,6 +119,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
       status: statusValue,
       category: trimmedCategory,
       priority: priorityValue,
+      startDate: startDateValue || undefined,
+      endDate: endDateValue || undefined,
     })
     onClose()
   }
@@ -202,6 +220,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
             <label className="text-xs font-medium text-slate-700">Start date</label>
             <input
               type="date"
+              value={startDateValue}
+              onChange={(event) => setStartDateValue(event.target.value)}
               className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-800 outline-none ring-0 placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
             />
           </div>
@@ -209,6 +229,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
             <label className="text-xs font-medium text-slate-700">End date</label>
             <input
               type="date"
+              value={endDateValue}
+              onChange={(event) => setEndDateValue(event.target.value)}
               className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-800 outline-none ring-0 placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
             />
           </div>

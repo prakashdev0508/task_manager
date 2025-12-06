@@ -82,6 +82,8 @@ const Dashboard = () => {
           status: task.status,
           category: task.category,
           priority: task.priority,
+          startDate: task.startDate,
+          endDate: task.endDate,
         }),
       )
     })
@@ -104,6 +106,16 @@ const Dashboard = () => {
     return 'Low'
   }
 
+  const calculateDaysLeft = (task: Task): number | undefined => {
+    if (task.status === 'completed') return 0
+    if (!task.endDate) return undefined
+    const today = new Date()
+    const end = new Date(task.endDate)
+    const diffMs = end.getTime() - today.getTime()
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
+    return diffDays
+  }
+
   const mapTaskToDetails = (task: Task): TaskDetails => ({
     title: task.title,
     label: task.category ?? 'Uncategorized',
@@ -115,7 +127,7 @@ const Dashboard = () => {
           : 'Completed',
     priority: mapPriorityToLabel(task.priority),
     description: task.description,
-    daysLeft: task.status === 'completed' ? 0 : 7,
+    daysLeft: calculateDaysLeft(task),
   })
 
   const editingTask =
@@ -229,7 +241,7 @@ const Dashboard = () => {
               checklist={21}
               status={'Todo' as never}
               priority={mapPriorityToLabel(task.priority) as never}
-              daysLeft={task.status === 'todo' ? 15 : 12}
+              daysLeft={calculateDaysLeft(task)}
               progress={0}
               onView={() => openViewTask(mapTaskToDetails(task))}
               onEdit={() => openEditModal(task.id)}
@@ -274,7 +286,7 @@ const Dashboard = () => {
               checklist={task.id === '3' ? 8 : 12}
               status={'In Progress' as never}
               priority={mapPriorityToLabel(task.priority) as never}
-              daysLeft={task.id === '3' ? 32 : 4}
+              daysLeft={calculateDaysLeft(task)}
               progress={task.id === '3' ? 26 : 74}
               onView={() => openViewTask(mapTaskToDetails(task))}
               onEdit={() => openEditModal(task.id)}
@@ -311,7 +323,7 @@ const Dashboard = () => {
               checklist={16}
               status={'Completed' as never}
               priority={mapPriorityToLabel(task.priority) as never}
-              daysLeft={0}
+              daysLeft={calculateDaysLeft(task)}
               progress={100}
               onView={() => openViewTask(mapTaskToDetails(task))}
               onEdit={() => openEditModal(task.id)}
@@ -348,21 +360,39 @@ const Dashboard = () => {
             ? editingTask.priority
             : 'medium'
         }
+        initialStartDate={
+          activeModal && activeModal.type === 'edit' && editingTask
+            ? editingTask.startDate
+            : ''
+        }
+        initialEndDate={
+          activeModal && activeModal.type === 'edit' && editingTask ? editingTask.endDate : ''
+        }
         onDeleteClick={
           activeModal && activeModal.type === 'edit'
             ? () => openDeleteModal(activeModal.taskId)
             : undefined
         }
-        onSubmit={({ title, description, status, category, priority }) => {
+        onSubmit={({ title, description, status, category, priority, startDate, endDate }) => {
           if (activeModal?.type === 'edit' && editingTask) {
             dispatch(
               updateTask({
                 id: editingTask.id,
-                changes: { title, description, status, category, priority },
+                changes: { title, description, status, category, priority, startDate, endDate },
               }),
             )
           } else if (activeModal?.type === 'add') {
-            dispatch(addTask({ title, description, status, category, priority }))
+            dispatch(
+              addTask({
+                title,
+                description,
+                status,
+                category,
+                priority,
+                startDate,
+                endDate,
+              }),
+            )
           }
         }}
       />

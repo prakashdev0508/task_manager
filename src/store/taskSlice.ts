@@ -48,12 +48,17 @@ type AddTaskPayload = {
   status?: TaskStatus
   category?: string
   priority?: TaskPriority
+  startDate?: string
+  endDate?: string
 }
 
 type UpdateTaskPayload = {
   id: string
   changes: Partial<
-    Pick<Task, 'title' | 'description' | 'status' | 'completed' | 'category' | 'priority'>
+    Pick<
+      Task,
+      'title' | 'description' | 'status' | 'completed' | 'category' | 'priority' | 'startDate' | 'endDate'
+    >
   >
 }
 
@@ -82,6 +87,8 @@ const taskSlice = createSlice({
             completed: payload.status === 'completed',
             priority: payload.priority ?? 'medium',
             category: payload.category?.trim() || undefined,
+            startDate: payload.startDate || undefined,
+            endDate: payload.endDate || undefined,
             createdAt: now,
             updatedAt: now,
           } satisfies Task,
@@ -105,6 +112,12 @@ const taskSlice = createSlice({
       }
       if (action.payload.changes.priority !== undefined) {
         task.priority = action.payload.changes.priority
+      }
+      if (action.payload.changes.startDate !== undefined) {
+        task.startDate = action.payload.changes.startDate || undefined
+      }
+      if (action.payload.changes.endDate !== undefined) {
+        task.endDate = action.payload.changes.endDate || undefined
       }
       if (action.payload.changes.status !== undefined) {
         task.status = action.payload.changes.status

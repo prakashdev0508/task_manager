@@ -6,6 +6,8 @@ type DummyTaskInput = {
   status: TaskStatus
   category: string
   priority: TaskPriority
+  startDate?: string
+  endDate?: string
 }
 
 export const dummyTasks: DummyTaskInput[] = [
@@ -15,6 +17,8 @@ export const dummyTasks: DummyTaskInput[] = [
     status: 'todo',
     category: 'Personal',
     priority: 'medium',
+    startDate: '2025-12-01',
+    endDate: '2025-12-07',
   },
   {
     title: 'Prepare client presentation',
@@ -22,6 +26,8 @@ export const dummyTasks: DummyTaskInput[] = [
     status: 'pending',
     category: 'Work',
     priority: 'high',
+    startDate: '2025-12-02',
+    endDate: '2025-12-10',
   },
   {
     title: 'Schedule dentist appointment',
@@ -29,6 +35,8 @@ export const dummyTasks: DummyTaskInput[] = [
     status: 'todo',
     category: 'Health',
     priority: 'low',
+    startDate: '2025-12-05',
+    endDate: '2026-01-05',
   },
   {
     title: 'Clean email inbox',
@@ -36,6 +44,8 @@ export const dummyTasks: DummyTaskInput[] = [
     status: 'pending',
     category: 'Admin',
     priority: 'medium',
+    startDate: '2025-11-25',
+    endDate: '2025-12-15',
   },
   {
     title: 'Pay electricity bill',
@@ -43,6 +53,8 @@ export const dummyTasks: DummyTaskInput[] = [
     status: 'completed',
     category: 'Finance',
     priority: 'medium',
+    startDate: '2025-11-30',
+    endDate: '2025-12-03',
   },
 ]
 
